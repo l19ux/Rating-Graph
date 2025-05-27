@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SSC CGL Mock Ratings - Codeforces Style</title>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    #chart_div {
+      width: 900px;
+      height: 500px;
+      margin: 0 auto;
+    }
+    .legend {
+      text-align: center;
+      margin: 20px 0;
+      font-size: 14px;
+    }
+    .legend span {
+      margin: 0 15px;
+    }
+  </style>
+</head>
+<body>
+  <h1 style="text-align: center;">SSC CGL Mock Performance</h1>
+  <div id="chart_div"></div>
+  
+  <script>
+    google.charts.load('current', {packages: ['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('date', 'Date');
+      data.addColumn('number', 'Your Percentile');
+      data.addColumn({type: 'string', role: 'annotation'});
+      
+      data.addColumn('number', 'Gray (0-50)');
+      data.addColumn('number', 'Green (50-60)');
+      data.addColumn('number', 'Blue (60-70)');
+      data.addColumn('number', 'Cyan (70-80)');
+      data.addColumn('number', 'Violet (80-90)');
+      data.addColumn('number', 'Orange (90-95)');
+      data.addColumn('number', 'Red (95-100)');
+
+      // Your data here - update with your actual mock results
+      data.addRows([
+        [new Date('2025-05-01'), 77.24, 'Mock 1', 50, 10, 10, 10, 10, 5, 5],
+        [new Date('2025-05-05'), 51.45, 'Mock 2', 50, 10, 10, 10, 10, 5, 5],
+        [new Date('2025-05-10'), 72.56, 'Mock 3', 50, 10, 10, 10, 10, 5, 5],
+        [new Date('2025-05-10'), 67.24, 'Mock 4', 50, 10, 10, 10, 10, 5, 5]
+      ]);
+
+      var options = {
+        isStacked: true,
+        hAxis: {
+          title: 'Date',
+          format: 'MMM d'
+        },
+        vAxis: {
+          title: 'Percentile',
+          minValue: 0,
+          maxValue: 100,
+          ticks: [0, 50, 60, 70, 80, 90, 95, 100]
+        },
+        series: {
+          0: { type: 'line', lineWidth: 3, color: 'black', pointSize: 6 },
+          1: { type: 'area', color: '#CCCCCC', areaOpacity: 0.3, lineWidth: 0, visibleInLegend: false },
+          2: { type: 'area', color: '#57A773', areaOpacity: 0.3, lineWidth: 0, visibleInLegend: false },
+          3: { type: 'area', color: '#4A89DC', areaOpacity: 0.3, lineWidth: 0, visibleInLegend: false },
+          4: { type: 'area', color: '#00FFFF', areaOpacity: 0.3, lineWidth: 0, visibleInLegend: false },
+          5: { type: 'area', color: '#AC92EC', areaOpacity: 0.3, lineWidth: 0, visibleInLegend: false },
+          6: { type: 'area', color: '#FFA500', areaOpacity: 0.3, lineWidth: 0, visibleInLegend: false },
+          7: { type: 'area', color: '#ED5565', areaOpacity: 0.3, lineWidth: 0, visibleInLegend: false }
+        },
+        chartArea: { width: '85%', height: '80%' }
+      };
+
+      var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
+      chart.draw(data, options);
+      
+      // Add custom legend
+      var legendHtml = '<div class="legend">';
+      legendHtml += '<span style="color: #CCCCCC;">■ Gray (0-50)</span>';
+      legendHtml += '<span style="color: #57A773;">■ Green (50-60)</span>';
+      legendHtml += '<span style="color: #4A89DC;">■ Blue (60-70)</span>';
+      legendHtml += '<span style="color: #00FFFF;">■ Cyan (70-80)</span>';
+      legendHtml += '<span style="color: #AC92EC;">■ Violet (80-90)</span>';
+      legendHtml += '<span style="color: #FFA500;">■ Orange (90-95)</span>';
+      legendHtml += '<span style="color: #ED5565;">■ Red (95-100)</span>';
+      legendHtml += '</div>';
+      
+      document.getElementById('chart_div').insertAdjacentHTML('afterend', legendHtml);
+    }
+  </script>
+</body>
+</html>
