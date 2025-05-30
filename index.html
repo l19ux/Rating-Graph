@@ -1,155 +1,135 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>./././././</title>
-  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <title>SSC CGL Dynamic Rating</title>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
-    #chart_div {
-      width: 900px;
-      height: 500px;
-      margin: 0 auto;
-    }
-    .legend {
-      text-align: center;
-      margin: 20px 0;
-      font-size: 14px;
-    }
-    .legend span {
-      margin: 0 15px;
-    }
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    #chart_div { width: 100%; height: 600px; }
   </style>
 </head>
 <body>
-  <h1 style="text-align: center;">./././././rainboy </h1>
+  <h1 style="text-align: center;">Your SSC CGL Rating Evolution</h1>
   <div id="chart_div"></div>
-  
+
   <script>
-    google.charts.load('current', {packages: ['corechart']});
+    google.charts.load('current', { packages: ['corechart'] });
     google.charts.setOnLoadCallback(drawChart);
 
+    // Rating calculation functions
+    function getExpectedRank(myRating, totalParticipants) {
+      const avgRating = 1500; // Assume average opponent rating
+      return 1 + (totalParticipants - 1) / (1 + Math.pow(10, (avgRating - myRating) / 400));
+    }
+
+    function getPerformanceRating(actualRank, totalParticipants) {
+      let low = 0, high = 4000;
+      for (let i = 0; i < 20; i++) {
+        const mid = (low + high) / 2;
+        const expectedRank = getExpectedRank(mid, totalParticipants);
+        if (expectedRank < actualRank) high = mid;
+        else low = mid;
+      }
+      return (low + high) / 2;
+    }
+
+    function calculateNewRating(oldRating, actualRank, totalParticipants, K = 32) {
+      const perfRating = getPerformanceRating(actualRank, totalParticipants);
+      return oldRating + K * (perfRating - oldRating) / 400;
+    }
+
+    // Your data: [date, rank, totalParticipants]
+    const mockData = [
+      { date: '2024-07-28', rank: 241100, total: 535300 },
+      { date: '2024-11-14', rank: 40400, total: 366500 },
+      { date: '2024-11-09', rank: 102600, total: 298700 },
+      { date: '2024-11-07', rank: 16000, total: 264000 },
+      { date: '2024-11-04', rank: 92200, total: 235900 },
+      { date: '2024-11-01', rank: 78800, total: 215000 },
+      { date: '2024-10-30', rank: 69300, total: 192500 },
+      { date: '2024-09-06', rank: 79600, total: 178700 },
+      { date: '2024-08-23', rank: 99600, total: 158900 },
+      { date: '2024-08-24', rank: 123300, total: 154500 },
+      { date: '2024-08-26', rank: 89400, total: 141000 },
+      { date: '2024-08-26', rank: 98100, total: 132000 },
+      { date: '2024-08-27', rank: 67300, total: 119700 },
+      { date: '2024-08-29', rank: 65800, total: 113700 },
+      { date: '2024-08-30', rank: 59400, total: 110200 },
+      { date: '2024-08-31', rank: 66500, total: 101100 },
+      { date: '2024-09-02', rank: 60700, total: 95700 },
+      { date: '2024-09-03', rank: 51800, total: 91500 },
+      { date: '2024-10-28', rank: 50600, total: 87100 },
+      { date: '2024-10-23', rank: 39300, total: 88900 },
+      { date: '2024-10-21', rank: 26000, total: 85600 },
+      { date: '2024-10-20', rank: 44700, total: 77600 },
+      { date: '2024-10-18', rank: 40500, total: 73800 },
+      { date: '2024-10-16', rank: 37000, total: 70800 },
+      { date: '2024-10-15', rank: 36700, total: 73900 },
+      { date: '2024-10-13', rank: 32900, total: 67600 },
+      { date: '2024-10-11', rank: 42400, total: 65500 },
+      { date: '2024-10-09', rank: 37100, total: 65800 },
+      { date: '2024-10-06', rank: 37100, total: 65800 },
+      { date: '2024-10-04', rank: 42000, total: 69900 },
+      { date: '2024-10-03', rank: 33500, total: 71600 },
+      { date: '2024-09-30', rank: 42500, total: 69200 },
+      { date: '2024-09-25', rank: 36200, total: 70100 },
+      { date: '2024-09-24', rank: 28000, total: 75900 },
+      { date: '2024-09-23', rank: 35200, total: 81200 },
+      { date: '2024-09-20', rank: 52500, total: 87100 },
+      { date: '2024-09-20', rank: 34400, total: 95100 },
+      { date: '2024-09-18', rank: 35100, total: 116500 },
+      { date: '2024-09-17', rank: 30400, total: 147000 },
+      { date: '2024-09-16', rank: 50900, total: 223300 },
+      { date: '2024-11-14', rank: 40400, total: 366500 }
+    ];
+
+    // Calculate rating history
+    let currentRating = 1500;
+    const ratingHistory = mockData.map(mock => {
+      const newRating = calculateNewRating(currentRating, mock.rank, mock.total);
+      currentRating = newRating;
+      return {
+        date: new Date(mock.date),
+        rating: newRating,
+        rank: mock.rank,
+        total: mock.total,
+        percentile: ((1 - mock.rank / mock.total) * 100).toFixed(1)
+      };
+    });
+
+    // Draw chart
     function drawChart() {
-      var data = new google.visualization.DataTable();
+      const data = new google.visualization.DataTable();
       data.addColumn('date', 'Date');
-      data.addColumn('number', 'Your Percentile');
-      data.addColumn({type: 'string', role: 'annotation'});
-      
-      data.addColumn('number', 'Gray (0-50)');
-      data.addColumn('number', 'Green (50-60)');
-      data.addColumn('number', 'Blue (60-70)');
-      data.addColumn('number', 'Cyan (70-80)');
-      data.addColumn('number', 'Violet (80-90)');
-      data.addColumn('number', 'Orange (90-95)');
-      data.addColumn('number', 'Red (95-100)');
+      data.addColumn('number', 'Rating');
+      data.addColumn('number', 'Percentile');
 
-      // Your data here - update with your actual mock results
-      data.addRows([
-        [new Date('2025-04-17'), 88.98, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-04-18'), 77.24, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-04-19'), 79.4, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-04-20'), 69.92, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-04-21'), 63.84, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-04-22'), 39.76, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-04-23'), 56.66, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-04-24'), 63.16, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-04-25'), 48.45, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-04-26'), 38.58, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-04-27'), 53.28, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-04-28'), 39.96, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-04-29'), 61.71, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-04-30'), 43.62, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-05-01'), 35.17, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-05-02'), 51.37, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-05-03'), 50.29, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-05-04'), 47.81, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-05-05'), 45.19, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-05-06'), 42.28, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-05-07'), 69.58, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-05-08'), 55.81, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-05-09'), 41.9, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-05-10'), 43.42, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-05-11'), 36.6, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-05-12'), 34.19, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-05-13'), 46.09, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-05-14'), 42.1, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-05-15'), 43.76, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-05-16'), 25.69, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-05-17'), 36.59, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-05-18'), 20.2, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-05-19'), 37.35, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-05-20'), 55.46, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-05-21'), 64, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-05-22'), 63.36, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-05-23'), 60.94, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-05-24'), 93.94, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-05-25'), 65.65, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-05-26'), 88.98, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-05-27'), 54.97, '', 50, 10, 10, 10, 10, 5, 5],
-        
-        // New Mocks start here
-        [new Date('2025-05-28'), 72.01, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-05-29'), 66.19, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-05-30'), 55.94, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-05-31'), 71.56, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-06-01'), 65.11, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-06-02'), 44.3, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-06-03'), 29.04, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-06-04'), 52.27, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-06-05'), 41.66, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-06-06'), 38.86, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-06-07'), 28.01, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-06-08'), 22.54, '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-06-09'), , '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-06-10'), , '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-06-11'), , '', 50, 10, 10, 10, 10, 5, 5],
-        [new Date('2025-06-12'), , '', 50, 10, 10, 10, 10, 5, 5],
+      ratingHistory.forEach(entry => {
+        data.addRow([entry.date, entry.rating, parseFloat(entry.percentile)]);
+      });
 
-      
-      ]);
-
-      var options = {
-        isStacked: true,
-        hAxis: {
-          title: 'Date',
-          format: 'MMM d'
-        },
-        vAxis: {
-          title: 'Percentile',
-          minValue: 0,
-          maxValue: 100,
-          ticks: [0, 50, 60, 70, 80, 90, 95, 100]
+      const options = {
+        title: 'Dynamic Rating vs. Percentile',
+        hAxis: { title: 'Date', format: 'MMM d' },
+        vAxis: { 
+          title: 'Rating / Percentile',
+          viewWindow: { min: 0, max: 2000 },
+          ticks: [0, 500, 1000, 1500, 2000]
         },
         series: {
-          0: { type: 'line', lineWidth: 3, color: 'black', pointSize: 6 },
-          1: { type: 'area', color: '#CCCCCC', areaOpacity: 0.3, lineWidth: 0, visibleInLegend: false },
-          2: { type: 'area', color: '#57A773', areaOpacity: 0.3, lineWidth: 0, visibleInLegend: false },
-          3: { type: 'area', color: '#4A89DC', areaOpacity: 0.3, lineWidth: 0, visibleInLegend: false },
-          4: { type: 'area', color: '#00FFFF', areaOpacity: 0.3, lineWidth: 0, visibleInLegend: false },
-          5: { type: 'area', color: '#AC92EC', areaOpacity: 0.3, lineWidth: 0, visibleInLegend: false },
-          6: { type: 'area', color: '#FFA500', areaOpacity: 0.3, lineWidth: 0, visibleInLegend: false },
-          7: { type: 'area', color: '#ED5565', areaOpacity: 0.3, lineWidth: 0, visibleInLegend: false }
+          0: { targetAxisIndex: 0, color: '#4285F4', lineWidth: 3 },
+          1: { targetAxisIndex: 1, color: '#EA4335', lineWidth: 2, lineDashStyle: [4, 1] }
         },
-        chartArea: { width: '85%', height: '80%' }
+        axes: {
+          y: {
+            0: { label: 'Rating' },
+            1: { label: 'Percentile (%)' }
+          }
+        }
       };
 
-      var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
+      const chart = new google.visualization.LineChart(document.getElementById('chart_div'));
       chart.draw(data, options);
-      
-      // Add custom legend
-      // var legendHtml = '<div class="legend">';
-      // legendHtml += '<span style="color: #CCCCCC;">■ Gray (0-50)</span>';
-      // legendHtml += '<span style="color: #57A773;">■ Green (50-60)</span>';
-      // legendHtml += '<span style="color: #4A89DC;">■ Blue (60-70)</span>';
-      // legendHtml += '<span style="color: #00FFFF;">■ Cyan (70-80)</span>';
-      // legendHtml += '<span style="color: #AC92EC;">■ Violet (80-90)</span>';
-      // legendHtml += '<span style="color: #FFA500;">■ Orange (90-95)</span>';
-      // legendHtml += '<span style="color: #ED5565;">■ Red (95-100)</span>';
-      // legendHtml += '</div>';
-      
-      document.getElementById('chart_div').insertAdjacentHTML('afterend', legendHtml);
     }
   </script>
 </body>
