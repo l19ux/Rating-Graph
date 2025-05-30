@@ -67,19 +67,28 @@
   const maxRating = 4000;
   const K = 100; // Tweak this to control how fast ratings change
 
-  const ratingHistory = mockData.map(({ date, rank, total }) => {
-    const actual = 1 - rank / total;
-    const expected = 1 - rating / maxRating;
-    const delta = (actual - expected) * K;
-    rating += delta;
+const mockCountByDate = {};
+const ratingHistory = mockData.map(({ date, rank, total }) => {
+  if (!mockCountByDate[date]) mockCountByDate[date] = 0;
+  const nthMockToday = mockCountByDate[date]++;
+  
+  // Spread them at 00:00, 08:00, 16:00, etc.
+  const dateWithOffset = new Date(date);
+  dateWithOffset.setHours(nthMockToday * 8);
 
-    return {
-      date: new Date(date),
-      rating: Math.round(rating),
-      rank,
-      total
-    };
-  });
+  const actual = 1 - rank / total;
+  const expected = 1 - rating / maxRating;
+  const delta = (actual - expected) * K;
+  rating += delta;
+
+  return {
+    date: dateWithOffset,
+    rating: Math.round(rating),
+    rank,
+    total
+  };
+});
+
 
   function drawChart() {
     const data = new google.visualization.DataTable();
