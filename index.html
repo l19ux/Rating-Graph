@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>SSC CGL Dynamic Rating</title>
+  <title>SSC CGL Rating Tracker</title>
   <script src="https://www.gstatic.com/charts/loader.js"></script>
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; }
@@ -9,122 +9,101 @@
   </style>
 </head>
 <body>
-  <h1 style="text-align: center;">Your SSC CGL Rating Evolution</h1>
+  <h1 style="text-align: center;">./ <h1>
   <div id="chart_div"></div>
 
   <script>
-    google.charts.load('current', { packages: ['corechart'] });
-    google.charts.setOnLoadCallback(drawChart);
+  google.charts.load('current', { packages: ['corechart'] });
+  google.charts.setOnLoadCallback(drawChart);
 
-    // Rating calculation functions
-    function getExpectedRank(myRating, totalParticipants) {
-      const avgRating = 1500; // Assume average opponent rating
-      return 1 + (totalParticipants - 1) / (1 + Math.pow(10, (avgRating - myRating) / 400));
-    }
+  // Your data: [date, rank, totalParticipants]
+  const mockData = [
+    { date: '2024-07-28', rank: 241100, total: 535300 },
+    { date: '2024-08-23', rank: 99600, total: 158900 },
+    { date: '2024-08-24', rank: 123300, total: 154500 },
+    { date: '2024-08-26', rank: 89400, total: 141000 },
+    { date: '2024-08-26', rank: 98100, total: 132000 },
+    { date: '2024-08-27', rank: 67300, total: 119700 },
+    { date: '2024-08-29', rank: 65800, total: 113700 },
+    { date: '2024-08-30', rank: 59400, total: 110200 },
+    { date: '2024-08-31', rank: 66500, total: 101100 },
+    { date: '2024-09-02', rank: 60700, total: 95700 },
+    { date: '2024-09-03', rank: 51800, total: 91500 },
+    { date: '2024-09-06', rank: 79600, total: 178700 },
+    { date: '2024-09-16', rank: 50900, total: 223300 },
+    { date: '2024-09-17', rank: 30400, total: 147000 },
+    { date: '2024-09-18', rank: 35100, total: 116500 },
+    { date: '2024-09-20', rank: 52500, total: 87100 },
+    { date: '2024-09-20', rank: 34400, total: 95100 },
+    { date: '2024-09-23', rank: 35200, total: 81200 },
+    { date: '2024-09-24', rank: 28000, total: 75900 },
+    { date: '2024-09-25', rank: 36200, total: 70100 },
+    { date: '2024-09-30', rank: 42500, total: 69200 },
+    { date: '2024-10-03', rank: 33500, total: 71600 },
+    { date: '2024-10-04', rank: 42000, total: 69900 },
+    { date: '2024-10-06', rank: 37100, total: 65800 },
+    { date: '2024-10-09', rank: 37100, total: 65800 },
+    { date: '2024-10-11', rank: 42400, total: 65500 },
+    { date: '2024-10-13', rank: 32900, total: 67600 },
+    { date: '2024-10-15', rank: 36700, total: 73900 },
+    { date: '2024-10-16', rank: 37000, total: 70800 },
+    { date: '2024-10-18', rank: 40500, total: 73800 },
+    { date: '2024-10-20', rank: 44700, total: 77600 },
+    { date: '2024-10-21', rank: 26000, total: 85600 },
+    { date: '2024-10-23', rank: 39300, total: 88900 },
+    { date: '2024-10-28', rank: 50600, total: 87100 },
+    { date: '2024-10-30', rank: 69300, total: 192500 },
+    { date: '2024-11-01', rank: 78800, total: 215000 },
+    { date: '2024-11-04', rank: 92200, total: 235900 },
+    { date: '2024-11-07', rank: 16000, total: 264000 },
+    { date: '2024-11-09', rank: 102600, total: 298700 },
+    { date: '2024-11-14', rank: 40400, total: 366500 }
+  ];
 
-    function getPerformanceRating(actualRank, totalParticipants) {
-      let low = 0, high = 4000;
-      for (let i = 0; i < 20; i++) {
-        const mid = (low + high) / 2;
-        const expectedRank = getExpectedRank(mid, totalParticipants);
-        if (expectedRank < actualRank) high = mid;
-        else low = mid;
-      }
-      return (low + high) / 2;
-    }
+  // Sort data chronologically
+  mockData.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-    function calculateNewRating(oldRating, actualRank, totalParticipants, K = 32) {
-      const perfRating = getPerformanceRating(actualRank, totalParticipants);
-      return oldRating + K * (perfRating - oldRating) / 400;
-    }
+  let rating = 1500;
+  const maxRating = 4000;
+  const K = 100; // Tweak this to control how fast ratings change
 
-    // Your data: [date, rank, totalParticipants]
-    const mockData = [
-      { date: '2024-07-28', rank: 241100, total: 535300 },
-      { date: '2024-11-14', rank: 40400, total: 366500 },
-      { date: '2024-11-09', rank: 102600, total: 298700 },
-      { date: '2024-11-07', rank: 16000, total: 264000 },
-      { date: '2024-11-04', rank: 92200, total: 235900 },
-      { date: '2024-11-01', rank: 78800, total: 215000 },
-      { date: '2024-10-30', rank: 69300, total: 192500 },
-      { date: '2024-09-06', rank: 79600, total: 178700 },
-      { date: '2024-08-23', rank: 99600, total: 158900 },
-      { date: '2024-08-24', rank: 123300, total: 154500 },
-      { date: '2024-08-26', rank: 89400, total: 141000 },
-      { date: '2024-08-26', rank: 98100, total: 132000 },
-      { date: '2024-08-27', rank: 67300, total: 119700 },
-      { date: '2024-08-29', rank: 65800, total: 113700 },
-      { date: '2024-08-30', rank: 59400, total: 110200 },
-      { date: '2024-08-31', rank: 66500, total: 101100 },
-      { date: '2024-09-02', rank: 60700, total: 95700 },
-      { date: '2024-09-03', rank: 51800, total: 91500 },
-      { date: '2024-10-28', rank: 50600, total: 87100 },
-      { date: '2024-10-23', rank: 39300, total: 88900 },
-      { date: '2024-10-21', rank: 26000, total: 85600 },
-      { date: '2024-10-20', rank: 44700, total: 77600 },
-      { date: '2024-10-18', rank: 40500, total: 73800 },
-      { date: '2024-10-16', rank: 37000, total: 70800 },
-      { date: '2024-10-15', rank: 36700, total: 73900 },
-      { date: '2024-10-13', rank: 32900, total: 67600 },
-      { date: '2024-10-11', rank: 42400, total: 65500 },
-      { date: '2024-10-09', rank: 37100, total: 65800 },
-      { date: '2024-10-06', rank: 37100, total: 65800 },
-      { date: '2024-10-04', rank: 42000, total: 69900 },
-      { date: '2024-10-03', rank: 33500, total: 71600 },
-      { date: '2024-09-30', rank: 42500, total: 69200 },
-      { date: '2024-09-25', rank: 36200, total: 70100 },
-      { date: '2024-09-24', rank: 28000, total: 75900 },
-      { date: '2024-09-23', rank: 35200, total: 81200 },
-      { date: '2024-09-20', rank: 52500, total: 87100 },
-      { date: '2024-09-20', rank: 34400, total: 95100 },
-      { date: '2024-09-18', rank: 35100, total: 116500 },
-      { date: '2024-09-17', rank: 30400, total: 147000 },
-      { date: '2024-09-16', rank: 50900, total: 223300 },
-      { date: '2024-11-14', rank: 40400, total: 366500 }
-    ];
+  const ratingHistory = mockData.map(({ date, rank, total }) => {
+    const actual = 1 - rank / total;
+    const expected = 1 - rating / maxRating;
+    const delta = (actual - expected) * K;
+    rating += delta;
 
-    // Calculate rating history
-    let currentRating = 1500;
-    const ratingHistory = mockData.map(mock => {
-      const newRating = calculateNewRating(currentRating, mock.rank, mock.total);
-      currentRating = newRating;
-      return {
-        date: new Date(mock.date),
-        rating: newRating,
-        rank: mock.rank,
-        total: mock.total,
-        percentile: ((1 - mock.rank / mock.total) * 100).toFixed(1)
-      };
+    return {
+      date: new Date(date),
+      rating: Math.round(rating),
+      rank,
+      total
+    };
+  });
+
+  function drawChart() {
+    const data = new google.visualization.DataTable();
+    data.addColumn('date', 'Date');
+    data.addColumn('number', 'Rating');
+
+    ratingHistory.forEach(entry => {
+      data.addRow([entry.date, entry.rating]);
     });
 
-    // Draw chart
-    function drawChart() {
-      const data = new google.visualization.DataTable();
-      data.addColumn('date', 'Date');
-      data.addColumn('number', 'Rating');
-      data.addColumn('number', 'Percentile');
+    const options = {
+  title: './',
+  hAxis: { title: 'Date', format: 'MMM d' },
+  vAxis: { title: 'Rating', viewWindow: { min: 0, max: 4000 } },
+  series: {
+    0: { color: '#4285F4', lineWidth: 3 }
+  },
+  legend: 'none'
+};
 
-      ratingHistory.forEach(entry => {
-        data.addRow([entry.date, entry.rating, parseFloat(entry.percentile)]);
-      });
+    const chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
+  }
+</script>
 
-      const options = {
-        title: 'Dynamic Rating vs. Percentile',
-        hAxis: { title: 'Date', format: 'MMM d' },
-                vAxes: {
-          0: { title: 'Rating', viewWindow: { min: 0, max: 2000 } },
-          1: { title: 'Percentile (%)', viewWindow: { min: 0, max: 100 } }
-        },
-        series: {
-          0: { targetAxisIndex: 0, color: '#4285F4', lineWidth: 3 },
-          1: { targetAxisIndex: 1, color: '#EA4335', lineWidth: 2, lineDashStyle: [4, 1] }
-        }
-        
-      };
-
-      const chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-      chart.draw(data, options);
-    }
-  </script>
 </body>
 </html>
