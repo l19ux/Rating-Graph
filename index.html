@@ -111,21 +111,15 @@
       const options = {
         title: 'Dynamic Rating vs. Percentile',
         hAxis: { title: 'Date', format: 'MMM d' },
-        vAxis: { 
-          title: 'Rating / Percentile',
-          viewWindow: { min: 0, max: 2000 },
-          ticks: [0, 500, 1000, 1500, 2000]
+                vAxes: {
+          0: { title: 'Rating', viewWindow: { min: 0, max: 2000 } },
+          1: { title: 'Percentile (%)', viewWindow: { min: 0, max: 100 } }
         },
         series: {
           0: { targetAxisIndex: 0, color: '#4285F4', lineWidth: 3 },
           1: { targetAxisIndex: 1, color: '#EA4335', lineWidth: 2, lineDashStyle: [4, 1] }
-        },
-        axes: {
-          y: {
-            0: { label: 'Rating' },
-            1: { label: 'Percentile (%)' }
-          }
         }
+        
       };
 
       const chart = new google.visualization.LineChart(document.getElementById('chart_div'));
