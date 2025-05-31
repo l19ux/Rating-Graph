@@ -441,14 +441,17 @@
   topper_marks: 200,
   my_rank: 9928,
   total: 20615
-}];
+}/* your large array as above - unchanged, omitted here for brevity */];
 
     const K = 32; 
     let rating = 50;
     const maxRating = 100;
     const ratings = [];
     const dates = [];
+    const deltas = [];
+    const ranks = [];
 
+    let prevRating = rating;
     testData.forEach(test => {
       const percentile = 1 - test.my_rank / test.total;
       const expectedPercentile = rating / maxRating;
@@ -458,8 +461,15 @@
       if (rating < 0) rating = 0;
       if (rating > maxRating) rating = maxRating;
 
-      ratings.push(Math.round(rating));
+      rating = Math.round(rating);
+
+      ratings.push(rating);
       dates.push(test.date);
+      
+      deltas.push(rating - prevRating);
+      ranks.push(test.my_rank);
+
+      prevRating = rating;
     });
 
     const ctx = document.getElementById('ratingChart').getContext('2d');
@@ -471,12 +481,13 @@
         datasets: [{
           label: 'Rating Over Time',
           data: ratings,
-          borderColor: '#FFFFFF',  // 🟠 Golden line color
-    			backgroundColor: '#E1AA38',
+          borderColor: '#FFFFFF',  // Golden line color
+          backgroundColor: '#E1AA38',
           fill: false,
           tension: 0.2,
-					z: 1
-
+          pointRadius: 5,
+          pointHoverRadius: 7,
+          z: 1
         }]
       },
       options: {
@@ -484,66 +495,32 @@
         plugins: {
           legend: { display: true },
           annotation: {
-					drawTime: 'beforeDatasetsDraw',
+            drawTime: 'beforeDatasetsDraw',
             annotations: {
-  grayBand: {
-    type: 'box',
-    yMin: 0,
-    yMax: 30,
-    backgroundColor: '#CCCCCC', // Gray
-    z: 0
-  },
-  lightGreenBand: {
-    type: 'box',
-    yMin: 30,
-    yMax: 50,
-    backgroundColor: '#77FF77', // Light Green
-    z: 0
-  },
-  cyanBand: {
-    type: 'box',
-    yMin: 50,
-    yMax: 60,
-    backgroundColor: '#77DDBB', // Cyan
-    z: 0
-  },
-  darkBlueBand: {
-    type: 'box',
-    yMin: 60,
-    yMax: 70,
-    backgroundColor: '#AAAAFF', // Dark Blue
-    z: 0
-  },
-  violetBand: {
-    type: 'box',
-    yMin: 70,
-    yMax: 80,
-    backgroundColor: '#EE82EE', // Violet
-    z: 0
-  },
-  yellowBand: {
-    type: 'box',
-    yMin: 80,
-    yMax: 90,
-    backgroundColor: '#FFBB55', // Yellow
-    z: 0
-  },
-  redBand: {
-    type: 'box',
-    yMin: 90,
-    yMax: 95,
-    backgroundColor: '#FF3333', // Red
-    z: 0
-  },
-  extraRedBand: {
-    type: 'box',
-    yMin: 95,
-    yMax: 100,
-    backgroundColor: '#AA0000', // Extra Red
-    z: 0
-  }
-}
-
+              grayBand: { type: 'box', yMin: 0, yMax: 30, backgroundColor: '#CCCCCC', z: 0 },
+              lightGreenBand: { type: 'box', yMin: 30, yMax: 50, backgroundColor: '#77FF77', z: 0 },
+              cyanBand: { type: 'box', yMin: 50, yMax: 60, backgroundColor: '#77DDBB', z: 0 },
+              darkBlueBand: { type: 'box', yMin: 60, yMax: 70, backgroundColor: '#AAAAFF', z: 0 },
+              violetBand: { type: 'box', yMin: 70, yMax: 80, backgroundColor: '#EE82EE', z: 0 },
+              yellowBand: { type: 'box', yMin: 80, yMax: 90, backgroundColor: '#FFBB55', z: 0 },
+              redBand: { type: 'box', yMin: 90, yMax: 95, backgroundColor: '#FF3333', z: 0 },
+              extraRedBand: { type: 'box', yMin: 95, yMax: 100, backgroundColor: '#AA0000', z: 0 }
+            }
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const i = context.dataIndex;
+                const rating = context.parsed.y;
+                const delta = deltas[i] >= 0 ? '+' + deltas[i] : deltas[i];
+                const rank = ranks[i];
+                return [
+                  `Rating: ${rating}`,
+                  `Change: ${delta}`,
+                  `Rank: ${rank}`
+                ];
+              }
+            }
           }
         },
         scales: {
