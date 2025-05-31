@@ -471,9 +471,12 @@
         datasets: [{
           label: 'Rating Over Time',
           data: ratings,
-          borderColor: 'blue',
+          borderColor: '#FFFFFF',  // 🟠 Golden line color
+    			backgroundColor: '#E1AA38',
           fill: false,
-          tension: 0.2
+          tension: 0.2,
+					z: 1
+
         }]
       },
       options: {
@@ -481,54 +484,63 @@
         plugins: {
           legend: { display: true },
           annotation: {
+					drawTime: 'beforeDatasetsDraw',
             annotations: {
   grayBand: {
     type: 'box',
     yMin: 0,
     yMax: 30,
-    backgroundColor: 'rgba(128, 128, 128, 0.2)' // Gray
+    backgroundColor: '#CCCCCC', // Gray
+    z: 0
   },
   lightGreenBand: {
     type: 'box',
     yMin: 30,
     yMax: 50,
-    backgroundColor: 'rgba(144, 238, 144, 0.2)' // Light Green
+    backgroundColor: '#77FF77', // Light Green
+    z: 0
   },
   cyanBand: {
     type: 'box',
     yMin: 50,
     yMax: 60,
-    backgroundColor: 'rgba(0, 255, 255, 0.2)' // Cyan
+    backgroundColor: '#77DDBB', // Cyan
+    z: 0
   },
   darkBlueBand: {
     type: 'box',
     yMin: 60,
     yMax: 70,
-    backgroundColor: 'rgba(0, 0, 139, 0.2)' // Dark Blue
+    backgroundColor: '#AAAAFF', // Dark Blue
+    z: 0
   },
   violetBand: {
     type: 'box',
     yMin: 70,
     yMax: 80,
-    backgroundColor: 'rgba(238, 130, 238, 0.2)' // Violet
+    backgroundColor: '#EE82EE', // Violet
+    z: 0
   },
   yellowBand: {
     type: 'box',
     yMin: 80,
     yMax: 90,
-    backgroundColor: 'rgba(255, 255, 0, 0.2)' // Yellow
+    backgroundColor: '#FFBB55', // Yellow
+    z: 0
   },
   redBand: {
     type: 'box',
     yMin: 90,
     yMax: 95,
-    backgroundColor: 'rgba(255, 0, 0, 0.2)' // Red
+    backgroundColor: '#FF3333', // Red
+    z: 0
   },
   extraRedBand: {
     type: 'box',
     yMin: 95,
     yMax: 100,
-    backgroundColor: 'rgba(139, 0, 0, 0.2)' // Extra Red (Dark Red)
+    backgroundColor: '#AA0000', // Extra Red
+    z: 0
   }
 }
 
