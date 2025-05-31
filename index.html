@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Rating Tracker</title>
   <style>
     body {
@@ -18,13 +18,14 @@
   </style>
 </head>
 <body>
-  <h1>Mock Test Rating Tracker</h1>
+  <h1>././././</h1>
   <canvas id="ratingChart" width="900" height="400"></canvas>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.4.0"></script>
+
   <script>
-     const testData = [
-      {
+    const testData = [{
   date: '2024-07-28',
   my_marks: 79.5,
   avg_marks: 77.97,
@@ -440,34 +441,29 @@
   topper_marks: 200,
   my_rank: 9928,
   total: 20615
-}
+}];
 
-
-
-    ];
-
-	  const K = 32; 
-    let rating = 50; // initial rating
+    const K = 32; 
+    let rating = 50;
     const maxRating = 100;
-
     const ratings = [];
     const dates = [];
 
-testData.forEach(test => {
-  const percentile = 1 - test.my_rank / test.total;
-  const expectedPercentile = rating / maxRating;
-  const ratingChange = K * Math.sign(percentile - expectedPercentile) * Math.pow(Math.abs(percentile - expectedPercentile), 0.7);
+    testData.forEach(test => {
+      const percentile = 1 - test.my_rank / test.total;
+      const expectedPercentile = rating / maxRating;
+      const ratingChange = K * Math.sign(percentile - expectedPercentile) * Math.pow(Math.abs(percentile - expectedPercentile), 0.7);
 
-  rating += ratingChange;
+      rating += ratingChange;
+      if (rating < 0) rating = 0;
+      if (rating > maxRating) rating = maxRating;
 
-  if (rating < 0) rating = 0;
-  if (rating > maxRating) rating = maxRating;
-
-  ratings.push(Math.round(rating));
-  dates.push(test.date);
-});
+      ratings.push(Math.round(rating));
+      dates.push(test.date);
+    });
 
     const ctx = document.getElementById('ratingChart').getContext('2d');
+
     new Chart(ctx, {
       type: 'line',
       data: {
@@ -483,13 +479,66 @@ testData.forEach(test => {
       options: {
         responsive: true,
         plugins: {
-          legend: { display: true }
+          legend: { display: true },
+          annotation: {
+            annotations: {
+  grayBand: {
+    type: 'box',
+    yMin: 0,
+    yMax: 30,
+    backgroundColor: 'rgba(128, 128, 128, 0.2)' // Gray
+  },
+  lightGreenBand: {
+    type: 'box',
+    yMin: 30,
+    yMax: 50,
+    backgroundColor: 'rgba(144, 238, 144, 0.2)' // Light Green
+  },
+  cyanBand: {
+    type: 'box',
+    yMin: 50,
+    yMax: 60,
+    backgroundColor: 'rgba(0, 255, 255, 0.2)' // Cyan
+  },
+  darkBlueBand: {
+    type: 'box',
+    yMin: 60,
+    yMax: 70,
+    backgroundColor: 'rgba(0, 0, 139, 0.2)' // Dark Blue
+  },
+  violetBand: {
+    type: 'box',
+    yMin: 70,
+    yMax: 80,
+    backgroundColor: 'rgba(238, 130, 238, 0.2)' // Violet
+  },
+  yellowBand: {
+    type: 'box',
+    yMin: 80,
+    yMax: 90,
+    backgroundColor: 'rgba(255, 255, 0, 0.2)' // Yellow
+  },
+  redBand: {
+    type: 'box',
+    yMin: 90,
+    yMax: 95,
+    backgroundColor: 'rgba(255, 0, 0, 0.2)' // Red
+  },
+  extraRedBand: {
+    type: 'box',
+    yMin: 95,
+    yMax: 100,
+    backgroundColor: 'rgba(139, 0, 0, 0.2)' // Extra Red (Dark Red)
+  }
+}
+
+          }
         },
         scales: {
           y: {
-            title: { display: true, text: 'Rating' },
             beginAtZero: true,
-            max: maxRating
+            max: maxRating,
+            title: { display: true, text: 'Rating' }
           },
           x: {
             title: { display: true, text: 'Date' }
