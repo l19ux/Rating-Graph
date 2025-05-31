@@ -11,16 +11,20 @@
       background-color: #f4f4f4;
     }
     canvas {
-      background: white;
-      border: 1px solid #ccc;
-      max-width: 100%;
-    }
+  background: white;
+  border: 1px solid #ccc;
+  max-width: 750px;
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
   </style>
 </head>
 <body>
   <h1>././././</h1>
-  <canvas id="ratingChart" width="900" height="400"></canvas>
-
+  <canvas id="ratingChart" width="750" height="300"></canvas>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.4.0"></script>
 
@@ -509,18 +513,21 @@
           },
           tooltip: {
             callbacks: {
-              label: function(context) {
-                const i = context.dataIndex;
-                const rating = context.parsed.y;
-                const delta = deltas[i] >= 0 ? '+' + deltas[i] : deltas[i];
-                const rank = ranks[i];
-                return [
-                  `Rating: ${rating}`,
-                  `Change: ${delta}`,
-                  `Rank: ${rank}`
-                ];
-              }
-            }
+        label: function(context) {
+          const idx = context.dataIndex;
+          const rating = context.parsed.y;
+          const test = testData[idx];
+          const percentile = ((1 - test.my_rank / test.total) * 100).toFixed(2);
+          const rank = test.my_rank;
+          const delta = idx === 0 ? 0 : rating - context.chart.data.datasets[0].data[idx - 1];
+
+          return [
+            `Rating: ${rating} (${delta >= 0 ? '+' : ''}${delta.toFixed(2)})`,
+            `Rank: ${rank}`,
+            `Percentile: ${percentile}%`
+          ];
+        }
+      }
           }
         },
         scales: {
