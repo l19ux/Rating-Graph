@@ -1,118 +1,502 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>SSC CGL Rating Tracker</title>
-  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rating Tracker</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    #chart_div { width: 100%; height: 600px; }
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background-color: #f4f4f4;
+    }
+    canvas {
+      background: white;
+      border: 1px solid #ccc;
+      max-width: 100%;
+    }
   </style>
 </head>
 <body>
-  <h1 style="text-align: center;">./ <h1>
-  <div id="chart_div"></div>
+  <h1>Mock Test Rating Tracker</h1>
+  <canvas id="ratingChart" width="900" height="400"></canvas>
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-  google.charts.load('current', { packages: ['corechart'] });
-  google.charts.setOnLoadCallback(drawChart);
+     const testData = [
+      {
+  date: '2024-07-28',
+  my_marks: 79.5,
+  avg_marks: 77.97,
+  median_marks: 77,
+  topper_marks: 200,
+  my_rank: 241135,
+  total: 535378
+},{
+  date: '2024-08-23',
+  my_marks: 89.5,
+  avg_marks: 99.27,
+  median_marks: 94.5,
+  topper_marks: 200,
+  my_rank: 99568,
+  total: 158917
+},{
+  date: '2024-08-24',
+  my_marks: 97,
+  avg_marks: 123.53,
+  median_marks: 130,
+  topper_marks: 200,
+  my_rank: 123313,
+  total: 154523
+},{
+  date: '2024-08-26',
+  my_marks: 109,
+  avg_marks: 116.72,
+  median_marks: 130,
+  topper_marks: 200,
+  my_rank: 89461,
+  total: 141070
+},{
+  date: '2024-08-26',
+  my_marks: 91,
+  avg_marks: 109.28,
+  median_marks: 110,
+  topper_marks: 200,
+  my_rank: 98110,
+  total: 132016
+},{
+  date: '2024-08-27',
+  my_marks: 108.5,
+  avg_marks: 110.83,
+  median_marks: 110,
+  topper_marks: 200,
+  my_rank: 67322,
+  total: 119693
+},{
+  date: '2024-08-29',
+  my_marks: 115,
+  avg_marks: 118.1,
+  median_marks: 130,
+  topper_marks: 200,
+  my_rank: 65839,
+  total: 113691
+},{
+  date: '2024-08-30',
+  my_marks: 120,
+  avg_marks: 119.08,
+  median_marks: 130,
+  topper_marks: 200,
+  my_rank: 59416,
+  total: 110206
+},{
+  date: '2024-08-31',
+  my_marks: 105.5,
+  avg_marks: 115.48,
+  median_marks: 110,
+  topper_marks: 200,
+  my_rank: 66548,
+  total: 101118
+},{
+  date: '2024-09-02',
+  my_marks: 119.55,
+  avg_marks: 112.5,
+  median_marks: 130,
+  topper_marks: 200,
+  my_rank: 60716,
+  total: 95768
+},{
+  date: '2024-09-03',
+  my_marks: 116.5,
+  avg_marks: 118.22,
+  median_marks: 130,
+  topper_marks: 200,
+  my_rank: 51815,
+  total: 91564
+},{
+  date: '2024-09-06',
+  my_marks: 108,
+  avg_marks: 102.12,
+  median_marks:110 ,
+  topper_marks: 200,
+  my_rank: 79600,
+  total: 178714
+},{
+  date: '2024-09-16',
+  my_marks: 138.5,
+  avg_marks: 105.92,
+  median_marks: 115.5,
+  topper_marks: 200,
+  my_rank: 50875,
+  total: 223488
+},{
+  date: '2024-09-17',
+  my_marks: 128.5,
+  avg_marks: 96.13,
+  median_marks: 94.5,
+  topper_marks: 200,
+  my_rank: 30382,
+  total: 147459
+},{
+  date: '2024-09-18',
+  my_marks: 119,
+  avg_marks: 96.14,
+  median_marks: 110,
+  topper_marks: 200,
+  my_rank: 35065,
+  total: 116557
+},{
+  date: '2024-09-20',
+  my_marks: 100,
+  avg_marks: 86.14,
+  median_marks: 94.5,
+  topper_marks: 200,
+  my_rank: 34392,
+  total: 95111
+},{
+  date: '2024-09-20',
+  my_marks: 113,
+  avg_marks: 119.89,
+  median_marks: 130,
+  topper_marks: 200,
+  my_rank: 52519,
+  total: 87177
+},{
+  date: '2024-09-23',
+  my_marks: 123.5,
+  avg_marks: 114.92,
+  median_marks: 110,
+  topper_marks: 200,
+  my_rank: 35229,
+  total: 81284
+},{
+  date: '2024-09-24',
+  my_marks: 137,
+  avg_marks: 121.86,
+  median_marks: 130 ,
+  topper_marks: 200,
+  my_rank: 27984,
+  total:75948
+},{
+  date: '2024-09-25',
+  my_marks: 111,
+  avg_marks: 109.11,
+  median_marks: 110,
+  topper_marks: 200,
+  my_rank: 36177,
+  total: 70179
+},{
+  date: '2024-09-30',
+  my_marks: 99.5,
+  avg_marks: 107.86,
+  median_marks: 110,
+  topper_marks: 200,
+  my_rank: 42552,
+  total: 69258
+},{
+  date: '2024-10-03',
+  my_marks: 127,
+  avg_marks: 119.26,
+  median_marks: 130,
+  topper_marks: 200,
+  my_rank: 33486,
+  total: 71663
+},{
+  date: '2024-10-04',
+  my_marks: 119.5,
+  avg_marks: 123.11,
+  median_marks: 130,
+  topper_marks: 200,
+  my_rank: 41992,
+  total: 69931
+},{
+  date: '2024-10-06',
+  my_marks: 129.5,
+  avg_marks: 116.23,
+  median_marks: 130,
+  topper_marks: 200,
+  my_rank: 24522,
+  total: 64035
+},{
+  date: '2024-10-09',
+  my_marks: 115.5,
+  avg_marks: 117.21,
+  median_marks: 130,
+  topper_marks: 200,
+  my_rank: 37125,
+  total: 65849
+},{
+  date: '2024-10-11',
+  my_marks: 104,
+  avg_marks: 113.98,
+  median_marks: 110,
+  topper_marks: 200,
+  my_rank: 42467,
+  total: 65500
+},{
+  date: '2024-10-13',
+  my_marks: 114.5,
+  avg_marks: 109.93,
+  median_marks: 110,
+  topper_marks: 200,
+  my_rank: 32901,
+  total: 67652
+},{
+  date: '2024-10-15',
+  my_marks: 115,
+  avg_marks: 114.04,
+  median_marks: 110,
+  topper_marks: 200,
+  my_rank: 36748,
+  total: 73919
+},{
+  date: '2024-10-16',
+  my_marks: 115.5,
+  avg_marks: 113.04,
+  median_marks: 110,
+  topper_marks: 200,
+  my_rank: 36988,
+  total: 70877
+},{
+  date: '2024-10-18',
+  my_marks: 128.5,
+  avg_marks: 110.91,
+  median_marks: 110,
+  topper_marks: 200,
+  my_rank: 26042,
+  total: 85612
+},{
+  date: '2024-10-20',
+  my_marks: 110.5,
+  avg_marks: 112.81,
+  median_marks: 110,
+  topper_marks: 200,
+  my_rank: 44665,
+  total: 77654
+},{
+  date: '2024-10-21',
+  my_marks: 128.5,
+  avg_marks: 110.92,
+  median_marks: 110,
+  topper_marks: 200,
+  my_rank: 26042,
+  total: 85613
+},{
+  date: '2024-10-23',
+  my_marks: 134,
+  avg_marks: 125.07,
+  median_marks: 130,
+  topper_marks: 200,
+  my_rank: 39306,
+  total: 88931
+},{
+  date: '2024-10-28',
+  my_marks: 121.5,
+  avg_marks: 123.83,
+  median_marks: 130,
+  topper_marks: 200,
+  my_rank: 50604,
+  total: 87090
+},{
+  date: '2024-10-30',
+  my_marks: 112.5,
+  avg_marks: 99,
+  median_marks: 110,
+  topper_marks: 200,
+  my_rank: 69330,
+  total: 192550
+},{
+  date: '2024-11-01',
+  my_marks: 132,
+  avg_marks: 116.61,
+  median_marks: 110,
+  topper_marks: 200,
+  my_rank: 78797,
+  total: 215025
+},{
+  date: '2024-11-04',
+  my_marks: 115.5,
+  avg_marks: 104.12,
+  median_marks: 110,
+  topper_marks: 200,
+  my_rank: 92181,
+  total: 235946
+},{
+  date: '2024-11-07',
+  my_marks: 154,
+  avg_marks: 115.71,
+  median_marks: 130,
+  topper_marks: 200,
+  my_rank: 16025,
+  total: 264020
+},{
+  date: '2024-11-09',
+  my_marks: 115.5,
+  avg_marks: 101.16,
+  median_marks: 130,
+  topper_marks: 200,
+  my_rank: 102618,
+  total: 298692
+},{
+  date: '2024-11-14',
+  my_marks: 130,
+  avg_marks: 93.3,
+  median_marks: 94.5,
+  topper_marks: 200,
+  my_rank: 40390,
+  total: 366501
+},{
+  date: '2025-05-26',
+  my_marks: 136,
+  avg_marks: 104.51,
+  median_marks: 110,
+  topper_marks: 200,
+  my_rank: 39978,
+  total: 145007
+},{
+  date: '2025-05-26',
+  my_marks: 119,
+  avg_marks: 99.45,
+  median_marks: 94.5,
+  topper_marks: 200,
+  my_rank: 30585,
+  total: 90261
+},{
+  date: '2025-05-27',
+  my_marks: 123,
+  avg_marks: 111.2,
+  median_marks: 110,
+  topper_marks: 200,
+  my_rank: 31541,
+  total: 71712
+},{
+  date: '2025-05-27',
+  my_marks: 131.5,
+  avg_marks: 110.36,
+  median_marks: 115.5,
+  topper_marks: 200,
+  my_rank: 16979,
+  total: 59557
+},{
+  date: '2025-05-27',
+  my_marks: 108.5,
+  avg_marks: 92.18,
+  median_marks: 90,
+  topper_marks: 200,
+  my_rank: 16817,
+  total: 48206
+},{
+  date: '2025-05-28',
+  my_marks: 119.5,
+  avg_marks: 128.5,
+  median_marks: 130,
+  topper_marks: 200,
+  my_rank: 27300,
+  total: 38481
+},{
+  date: '2025-05-28',
+  my_marks: 126.5,
+  avg_marks: 117.89,
+  median_marks: 130,
+  topper_marks: 200,
+  my_rank: 16245,
+  total: 34075
+},{
+  date: '2025-05-29',
+  my_marks: 123.5,
+  avg_marks: 123.01,
+  median_marks: 130,
+  topper_marks: 200,
+  my_rank: 17859,
+  total: 30602
+},{
+  date: '2025-05-29',
+  my_marks: 122,
+  avg_marks: 122.77,
+  median_marks: 130,
+  topper_marks: 200,
+  my_rank: 17507,
+  total: 28681
+},{
+  date: '2025-05-29',
+  my_marks: 111.5,
+  avg_marks: 123.46,
+  median_marks: 123.5,
+  topper_marks: 200,
+  my_rank: 18086,
+  total: 25135
+},{
+  date: '2025-05-30',
+  my_marks: 96,
+  avg_marks: 114.43,
+  median_marks: 130,
+  topper_marks: 200,
+  my_rank: 17514,
+  total: 22609
+},{
+  date: '2025-05-30',
+  my_marks: 128,
+  avg_marks: 120.38,
+  median_marks: 130,
+  topper_marks: 200,
+  my_rank: 9928,
+  total: 20615
+}
 
-  // Your data: [date, rank, totalParticipants]
-  const mockData = [
-    { date: '2024-07-28', rank: 241100, total: 535300 },
-    { date: '2024-08-23', rank: 99600, total: 158900 },
-    { date: '2024-08-24', rank: 123300, total: 154500 },
-    { date: '2024-08-26', rank: 89400, total: 141000 },
-    { date: '2024-08-26', rank: 98100, total: 132000 },
-    { date: '2024-08-27', rank: 67300, total: 119700 },
-    { date: '2024-08-29', rank: 65800, total: 113700 },
-    { date: '2024-08-30', rank: 59400, total: 110200 },
-    { date: '2024-08-31', rank: 66500, total: 101100 },
-    { date: '2024-09-02', rank: 60700, total: 95700 },
-    { date: '2024-09-03', rank: 51800, total: 91500 },
-    { date: '2024-09-06', rank: 79600, total: 178700 },
-    { date: '2024-09-16', rank: 50900, total: 223300 },
-    { date: '2024-09-17', rank: 30400, total: 147000 },
-    { date: '2024-09-18', rank: 35100, total: 116500 },
-    { date: '2024-09-20', rank: 52500, total: 87100 },
-    { date: '2024-09-20', rank: 34400, total: 95100 },
-    { date: '2024-09-23', rank: 35200, total: 81200 },
-    { date: '2024-09-24', rank: 28000, total: 75900 },
-    { date: '2024-09-25', rank: 36200, total: 70100 },
-    { date: '2024-09-30', rank: 42500, total: 69200 },
-    { date: '2024-10-03', rank: 33500, total: 71600 },
-    { date: '2024-10-04', rank: 42000, total: 69900 },
-    { date: '2024-10-06', rank: 37100, total: 65800 },
-    { date: '2024-10-09', rank: 37100, total: 65800 },
-    { date: '2024-10-11', rank: 42400, total: 65500 },
-    { date: '2024-10-13', rank: 32900, total: 67600 },
-    { date: '2024-10-15', rank: 36700, total: 73900 },
-    { date: '2024-10-16', rank: 37000, total: 70800 },
-    { date: '2024-10-18', rank: 40500, total: 73800 },
-    { date: '2024-10-20', rank: 44700, total: 77600 },
-    { date: '2024-10-21', rank: 26000, total: 85600 },
-    { date: '2024-10-23', rank: 39300, total: 88900 },
-    { date: '2024-10-28', rank: 50600, total: 87100 },
-    { date: '2024-10-30', rank: 69300, total: 192500 },
-    { date: '2024-11-01', rank: 78800, total: 215000 },
-    { date: '2024-11-04', rank: 92200, total: 235900 },
-    { date: '2024-11-07', rank: 16000, total: 264000 },
-    { date: '2024-11-09', rank: 102600, total: 298700 },
-    { date: '2024-11-14', rank: 40400, total: 366500 }
-  ];
 
-  // Sort data chronologically
-  mockData.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-  let rating = 1500;
-  const maxRating = 4000;
-  const K = 100; // Tweak this to control how fast ratings change
+    ];
 
-const mockCountByDate = {};
-const ratingHistory = mockData.map(({ date, rank, total }) => {
-  if (!mockCountByDate[date]) mockCountByDate[date] = 0;
-  const nthMockToday = mockCountByDate[date]++;
-  
-  // Spread them at 00:00, 08:00, 16:00, etc.
-  const dateWithOffset = new Date(date);
-  dateWithOffset.setHours(nthMockToday * 8);
+	  const K = 32; 
+    let rating = 50; // initial rating
+    const maxRating = 100;
 
-  const actual = 1 - rank / total;
-  const expected = 1 - rating / maxRating;
-  const delta = (actual - expected) * K;
-  rating += delta;
+    const ratings = [];
+    const dates = [];
 
-  return {
-    date: dateWithOffset,
-    rating: Math.round(rating),
-    rank,
-    total
-  };
+testData.forEach(test => {
+  const percentile = 1 - test.my_rank / test.total;
+  const expectedPercentile = rating / maxRating;
+  const ratingChange = K * Math.sign(percentile - expectedPercentile) * Math.pow(Math.abs(percentile - expectedPercentile), 0.7);
+
+  rating += ratingChange;
+
+  if (rating < 0) rating = 0;
+  if (rating > maxRating) rating = maxRating;
+
+  ratings.push(Math.round(rating));
+  dates.push(test.date);
 });
 
-
-  function drawChart() {
-    const data = new google.visualization.DataTable();
-    data.addColumn('date', 'Date');
-    data.addColumn('number', 'Rating');
-
-    ratingHistory.forEach(entry => {
-      data.addRow([entry.date, entry.rating]);
+    const ctx = document.getElementById('ratingChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: dates,
+        datasets: [{
+          label: 'Rating Over Time',
+          data: ratings,
+          borderColor: 'blue',
+          fill: false,
+          tension: 0.2
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: true }
+        },
+        scales: {
+          y: {
+            title: { display: true, text: 'Rating' },
+            beginAtZero: true,
+            max: maxRating
+          },
+          x: {
+            title: { display: true, text: 'Date' }
+          }
+        }
+      }
     });
-
-    const options = {
-  title: './',
-  hAxis: { title: 'Date', format: 'MMM d' },
-  vAxis: { title: 'Rating', viewWindow: { min: 0, max: 4000 } },
-  series: {
-    0: { color: '#4285F4', lineWidth: 3 }
-  },
-  legend: 'none'
-};
-
-    const chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-    chart.draw(data, options);
-  }
-</script>
-
+  </script>
 </body>
 </html>
