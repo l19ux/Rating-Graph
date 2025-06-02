@@ -19,35 +19,39 @@
       display: block;
       margin: 0 auto 2rem auto;
     }
-    #radarContainer {
-      width: 100%;
-      max-width: none;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      gap: 1rem;
-      box-sizing: border-box;
-    }
-    .radar-box {
-      background: white;
-      border: 1px solid #ccc;
-      flex: 1;
-      height: 440px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    .radar-title {
-      font-weight: bold;
-      margin-bottom: 0.5rem;
-      text-align: center;
-      font-size: 1.25rem;
-    }
-    .radar-box canvas {
-      width: 100% !important;
-      height: 100% !important;
-    }
+   #radarContainer {
+  width: 100%;
+  max-width: 100%;       /* limit width for better vertical layout */
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column; /* change from row to column */
+  gap: 1.5rem;            /* space between stacked items */
+  box-sizing: border-box;
+}
+
+.radar-box {
+  background: white;
+  border: 1px solid #ccc;
+  /* remove flex: 1 to avoid equal horizontal splitting */
+  height: 100%;
+  display: flex;
+  flex-direction: column; /* fix typo: 'colu' → 'column' */
+  align-items: center;
+  justify-content: center;
+}
+
+.radar-title {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  font-size: 1.25rem;
+}
+
+.radar-box canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
   </style>
 </head>
 <body>
@@ -712,7 +716,6 @@
       document.getElementById('radarChartReasoning').getContext('2d'),
       reasoningLabels, reasoningScores, 'rgba(255, 99, 132, 1)'
     );
-
     createRadarChart(
       document.getElementById('radarChartEnglish').getContext('2d'),
       labelsEnglish, englishData, 'rgba(54, 162, 235, 1)'
