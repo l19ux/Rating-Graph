@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Rating Tracker</title>
   <style>
     body {
@@ -19,22 +19,19 @@
       display: block;
       margin: 0 auto 2rem auto;
     }
-    /* Container for the 3 radar charts below rating */
     #radarContainer {
-  width: 100%;
-  max-width: none;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  box-sizing: border-box; /* to avoid overflow */
-}
-
-
+      width: 100%;
+      max-width: none;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      box-sizing: border-box;
+    }
     .radar-box {
       background: white;
       border: 1px solid #ccc;
-      width: 640px;
+      flex: 1;
       height: 440px;
       display: flex;
       flex-direction: column;
@@ -45,32 +42,30 @@
       font-weight: bold;
       margin-bottom: 0.5rem;
       text-align: center;
+      font-size: 1.25rem;
     }
-    /* Radar chart canvas inside boxes */
     .radar-box canvas {
-  width: 100% !important;
-  height: 100% !important;
-}
-
+      width: 100% !important;
+      height: 100% !important;
+    }
   </style>
 </head>
 <body>
   <h1>././././</h1>
   <canvas id="ratingChart" width="450" height="200"></canvas>
 
-  <!-- Radar charts container -->
   <div id="radarContainer">
     <div class="radar-box">
-      <div class="radar-title">R</div>
-      <!-- empty for now -->
+      <div class="radar-title">Reasoning</div>
+      <canvas id="radarChartReasoning" width="240" height="240"></canvas>
     </div>
     <div class="radar-box">
-      <div class="radar-title">E</div>
+      <div class="radar-title">English</div>
       <canvas id="radarChartEnglish" width="240" height="240"></canvas>
     </div>
     <div class="radar-box">
-      <div class="radar-title">M</div>
-      <!-- empty for now -->
+      <div class="radar-title">Maths</div>
+      <canvas id="radarChartMaths" width="240" height="240"></canvas>
     </div>
   </div>
 
@@ -78,7 +73,8 @@
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.4.0"></script>
 
   <script>
-const testData = [{
+    // Rating graph data
+    const testData = [{
   date: '2024-07-28',
   my_marks: 79.5,
   avg_marks: 77.97,
@@ -529,8 +525,7 @@ const testData = [{
 }
 /* your large array as above - unchanged, omitted here for brevity */];
 
-
-    const K = 32; 
+    const K = 32;
     let rating = 50;
     const maxRating = 100;
     const ratings = [];
@@ -634,37 +629,99 @@ const testData = [{
     ];
     const englishData = [86, 64, 63, 82, 89, 61, 71, 74, 54, 19, 30, 43, 85, 94];
 
-    const ctxEng = document.getElementById('radarChartEnglish').getContext('2d');
-    new Chart(ctxEng, {
-      type: 'radar',
-      data: {
-        labels: labelsEnglish,
-        datasets: [{
-          label: 'English Performance',
-          data: englishData,
-          backgroundColor: 'rgba(54, 162, 235, 0.2)',
-          borderColor: 'rgba(54, 162, 235, 1)',
-          pointBackgroundColor: 'rgba(54, 162, 235, 1)',
-          pointBorderColor: '#fff',
-          pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: 'rgba(54, 162, 235, 1)',
-        }]
-      },
-      options: {
-        scales: {
-          r: {
-            beginAtZero: true,
-            max: 100,
-            ticks: { stepSize: 20 }
+    // Reasoning Radar Chart Data
+    const reasoningLabels = [
+      "Semantic Analogy", "Symbolic/Number Analogy", "Figural Analogy", "Semantic Classification",
+      "Symbolic/Number Classification", "Figural Classification", "Coding Decoding - Letter Shifting",
+      "Coding Decoding - Operations on Place Value", "Coding Decoding", "Ven Diagram", "Word Building",
+      "Numerical and symbolic operations", "Punched Hole/ Pattern-Folding & Un-folding", "Figural Pattern - completion",
+      "Cube and Dice - 1", "Cube and Dice - 2", "Mirror Image", "Counting Figures", "Embedded Figures",
+      "Semantic Series", "Number Series", "Figural Series", "Problem Solving - Quant based Word Problems",
+      "Blood Relation", "Missing Number", "Direction and Distance", "Index, Address, Date and City Matching",
+      "Similarities and Differences", "Critical Thinking and Drawing Inferences", "Seating Arrangement",
+      "Clock and Calendar", "Ordering and Ranking", "Decision Making, emotional and social intelligence",
+      "Syllogistic Reasoning", "Statement & Conclusion"
+    ];
+    const reasoningScores = [
+      87.26, 65.17, 100, 91.34, 40.85, 82.37, 76.71, 84.74, 60.09, 86.98, 100,
+      87.29, 100, 60.84, 43.47, 39.33, 100, 44.05, 100, 100, 96.65, 100, 68.89,
+      82.05, 50.71, 79.93, 82.9, 88.78, 71.15, 57.75, 37.78, 46.68, 37.48, 100, 91.79
+    ];
+
+    // Maths Radar Chart Data - updated with your provided data
+    const mathsLabels = [
+      "Number System", "Basic Algebra Identities", "Algebra Linear Equation", "Algebra", "Percentage",
+      "Divisibility and Remainder", "Ratio and Proportions", "Compound Interest", "Simple Interest",
+      "Profit & Loss", "Average", "Graph", "Discount & Marked Price", "Partnership Business",
+      "Successive Selling", "Mixture and Alligation", "Time and Distance", "Time and Work",
+      "Trigonometry - Height and Distance", "Trigonometry", "Triangle", "Trigonometric Ratios & Identities",
+      "Circles", "Geometry", "Histogram and Frequency", "Mensuration 2D", "Mensuration 2D - Triangles",
+      "Mensuration 3D Solid Figure 1", "Mensuration 3D Solid Figure 2", "Simplification", "Fraction",
+      "BODMAS -Rule", "Square Roots & Elementary Surds", "Bar-Graph", "Pie-chart", "Installments"
+    ];
+    const mathsData = [
+      79.41, 93.65, 100, 88.27, 61.13,
+      94.5, 69.36, 74.58, 77.2,
+      65.3, 39.94, 71.76, 59.54, 62.05,
+      78.7, 50.8, 72.87, 45.35,
+      88.93, 91.94, 85.13, 82.04,
+      60.32, 81.63, 73.74, 100, 49,
+      76.67, 71.73, 88.87, 80.68,
+      96.97, 83.54, 70.28, 63.23, 35.05
+    ];
+
+    function createRadarChart(ctx, labels, data, color) {
+      return new Chart(ctx, {
+        type: 'radar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Score',
+            data: data,
+            fill: true,
+            backgroundColor: color.replace('1)', '0.3)'),
+            borderColor: color,
+            pointBackgroundColor: color,
+            pointBorderColor: '#fff',
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: color,
+            borderWidth: 2,
+            tension: 0.3
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            r: {
+              angleLines: { color: '#888' },
+              grid: { color: '#ccc' },
+              pointLabels: { color: '#333', font: { size: 12 } },
+              min: 0,
+              max: 100,
+              ticks: { stepSize: 20, color: '#666' }
+            }
+          },
+          plugins: {
+            legend: { display: false }
           }
-        },
-        plugins: {
-          legend: { display: true }
-        },
-        responsive: true,
-        maintainAspectRatio: false,
-      }
-    });
+        }
+      });
+    }
+
+    createRadarChart(
+      document.getElementById('radarChartReasoning').getContext('2d'),
+      reasoningLabels, reasoningScores, 'rgba(255, 99, 132, 1)'
+    );
+
+    createRadarChart(
+      document.getElementById('radarChartEnglish').getContext('2d'),
+      labelsEnglish, englishData, 'rgba(54, 162, 235, 1)'
+    );
+
+    createRadarChart(
+      document.getElementById('radarChartMaths').getContext('2d'),
+      mathsLabels, mathsData, 'rgba(255, 206, 86, 1)'
+    );
   </script>
 </body>
 </html>
