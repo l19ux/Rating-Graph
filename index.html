@@ -11,25 +11,69 @@
       background-color: #f4f4f4;
     }
     canvas {
-  background: white;
-  border: 1px solid #ccc;
-  max-width: 750px;
-  width: 100%;
-  height: auto;
-  display: block;
-  margin: 0 auto;
-}
-
+      background: white;
+      border: 1px solid #ccc;
+      max-width: 750px;
+      width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto 2rem auto;
+    }
+    /* Container for the 3 radar charts below rating */
+    #radarContainer {
+      max-width: 750px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .radar-box {
+      background: white;
+      border: 1px solid #ccc;
+      width: 240px;
+      height: 240px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .radar-title {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    /* Radar chart canvas inside boxes */
+    .radar-box canvas {
+      max-width: 100%;
+      max-height: 100%;
+    }
   </style>
 </head>
 <body>
   <h1>././././</h1>
   <canvas id="ratingChart" width="450" height="200"></canvas>
+
+  <!-- Radar charts container -->
+  <div id="radarContainer">
+    <div class="radar-box">
+      <div class="radar-title">Reasoning</div>
+      <!-- empty for now -->
+    </div>
+    <div class="radar-box">
+      <div class="radar-title">English</div>
+      <canvas id="radarChartEnglish" width="240" height="240"></canvas>
+    </div>
+    <div class="radar-box">
+      <div class="radar-title">Maths</div>
+      <!-- empty for now -->
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.4.0"></script>
 
   <script>
-    const testData = [{
+const testData = [{
   date: '2024-07-28',
   my_marks: 79.5,
   avg_marks: 77.97,
@@ -480,6 +524,7 @@
 }
 /* your large array as above - unchanged, omitted here for brevity */];
 
+
     const K = 32; 
     let rating = 50;
     const maxRating = 100;
@@ -502,7 +547,7 @@
 
       ratings.push(rating);
       dates.push(test.date);
-      
+
       deltas.push(rating - prevRating);
       ranks.push(test.my_rank);
 
@@ -518,7 +563,7 @@
         datasets: [{
           label: 'Rating Over Time',
           data: ratings,
-          borderColor: '#FFFFFF',  // Golden line color
+          borderColor: '#FFFFFF',
           backgroundColor: '#E1AA38',
           fill: false,
           tension: 0.2,
@@ -546,21 +591,21 @@
           },
           tooltip: {
             callbacks: {
-        label: function(context) {
-          const idx = context.dataIndex;
-          const rating = context.parsed.y;
-          const test = testData[idx];
-          const percentile = ((1 - test.my_rank / test.total) * 100).toFixed(2);
-          const rank = test.my_rank;
-          const delta = idx === 0 ? 0 : rating - context.chart.data.datasets[0].data[idx - 1];
+              label: function(context) {
+                const idx = context.dataIndex;
+                const rating = context.parsed.y;
+                const test = testData[idx];
+                const percentile = ((1 - test.my_rank / test.total) * 100).toFixed(2);
+                const rank = test.my_rank;
+                const delta = idx === 0 ? 0 : rating - context.chart.data.datasets[0].data[idx - 1];
 
-          return [
-            `Rating: ${rating} (${delta >= 0 ? '+' : ''}${delta.toFixed(2)})`,
-            `Rank: ${rank}`,
-            `Percentile: ${percentile}%`
-          ];
-        }
-      }
+                return [
+                  `Rating: ${rating} (${delta >= 0 ? '+' : ''}${delta.toFixed(2)})`,
+                  `Rank: ${rank}`,
+                  `Percentile: ${percentile}%`
+                ];
+              }
+            }
           }
         },
         scales: {
@@ -573,6 +618,46 @@
             title: { display: true, text: 'Date' }
           }
         }
+      }
+    });
+
+    // English Radar Chart
+    const labelsEnglish = [
+      "Spellings", "Synonyms", "Antonyms", "One word substitute", "Idioms",
+      "Error Spotting", "Vocab", "Grammar", "Active→Passive", "Passive→Active",
+      "Direct→Indirect", "Indirect→Direct", "Sent. Improve", "Cloze Test"
+    ];
+    const englishData = [86, 64, 63, 82, 89, 61, 71, 74, 54, 19, 30, 43, 85, 94];
+
+    const ctxEng = document.getElementById('radarChartEnglish').getContext('2d');
+    new Chart(ctxEng, {
+      type: 'radar',
+      data: {
+        labels: labelsEnglish,
+        datasets: [{
+          label: 'English Performance',
+          data: englishData,
+          backgroundColor: 'rgba(54, 162, 235, 0.2)',
+          borderColor: 'rgba(54, 162, 235, 1)',
+          pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: 'rgba(54, 162, 235, 1)',
+        }]
+      },
+      options: {
+        scales: {
+          r: {
+            beginAtZero: true,
+            max: 100,
+            ticks: { stepSize: 20 }
+          }
+        },
+        plugins: {
+          legend: { display: true }
+        },
+        responsive: true,
+        maintainAspectRatio: false,
       }
     });
   </script>
