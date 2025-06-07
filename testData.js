@@ -502,7 +502,9 @@
   topper_marks: 195,
   my_rank: 1401,
   total: 4605
-},{
+}
+,{   date: '2025-06-07',   my_marks: 108.5,   avg_marks: 93.16,   median_marks: 110.5,   topper_marks: 173,   my_rank: 110,   total: 235 },
+{
   date: '2025-06-07',
   my_marks: 113,
   avg_marks: 100,
