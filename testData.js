@@ -504,11 +504,11 @@
   total: 4605
 },{
   date: '2025-06-07',
-  my_marks: 108.5,
-  avg_marks: 93.16,
+  my_marks: 113,
+  avg_marks: 100,
   median_marks: 110.5,
   topper_marks: 173,
-  my_rank: 110,
-  total: 235
+  my_rank: 5728,
+  total: 19996
 }
 /* your large array as above - unchanged, omitted here for brevity */];
