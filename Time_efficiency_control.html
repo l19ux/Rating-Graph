@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Time Efficiency per Topic</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background-color: #f9f9f9;
+      text-align: center;
+    }
+    canvas {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <h2>Time Comparison Per Topic</h2>
+  <canvas id="timeChart"></canvas>
+
+  <script>
+    const topics = ["Percentage", "Trigonometry", "Algebra", "Geometry", "Average"];
+    const myTime = [45, 28, 60, 40, 50];
+    const avgTime = [30, 35, 45, 38, 42];
+
+    const ctx = document.getElementById('timeChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: topics,
+        datasets: [
+          {
+            label: 'Your Time (sec)',
+            data: myTime,
+            borderColor: 'rgba(255, 99, 132, 1)',
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            tension: 0.3,
+            fill: false,
+            pointRadius: 5
+          },
+          {
+            label: 'Average Time (sec)',
+            data: avgTime,
+            borderColor: 'rgba(75, 192, 192, 1)',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            tension: 0.3,
+            fill: false,
+            pointRadius: 5
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 240,
+            title: {
+              display: true,
+              text: 'Time (seconds)'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Topic'
+            }
+          }
+        },
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                return `${context.dataset.label}: ${context.raw.toFixed(0)} sec`;
+              }
+            }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
