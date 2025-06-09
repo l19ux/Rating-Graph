@@ -1,41 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Time Efficiency per Topic</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
+<meta charset="UTF-8" />
+<title>Math Mocks Time Efficiency</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
   body {
     font-family: Arial, sans-serif;
-    padding: 2rem;
-    background-color: #f9f9f9;
-    text-align: center;
+    display: flex;
+    height: 100vh;
+    margin: 0;
   }
-  #timeChart {
-    max-width: 1000px;
-    height: 500px !important;
-    margin: 0 auto;
+  #sidebar {
+    width: 200px;
+    background: #f0f0f0;
+    padding: 1rem;
+    box-sizing: border-box;
+  }
+  #sidebar button {
+    width: 100%;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    cursor: pointer;
+  }
+  #chart-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  canvas {
+    max-width: 800px;
+    max-height: 500px;
   }
 </style>
 </head>
 <body>
-  <h2>Time Comparison Per Topic</h2>
-  <canvas id="timeChart"></canvas>
 
-  <script>
-    const topics = ["Percentage", "Trigonometry", "Algebra", "Geometry", "Average"];
-    const myTime = [45, 28, 60, 40, 50];
-    const avgTime = [30, 35, 45, 38, 42];
+<div id="sidebar">
+  <h3>Select Mock</h3>
+  <button onclick="loadChartData('math-mock1.json')">Math Mock 1</button>
+  <button onclick="loadChartData('math-mock2.json')">Math Mock 2</button>
+  <button onclick="loadChartData('math-mock3.json')">Math Mock 3</button>
+</div>
+
+<div id="chart-container">
+  <canvas id="timeChart"></canvas>
+</div>
+
+<script>
+  let chartInstance = null;
+
+  async function loadChartData(file) {
+    const response = await fetch(file);
+    const data = await response.json();
 
     const ctx = document.getElementById('timeChart').getContext('2d');
-    new Chart(ctx, {
+
+    if (chartInstance) {
+      chartInstance.destroy();
+    }
+
+    chartInstance = new Chart(ctx, {
       type: 'line',
       data: {
-        labels: topics,
+        labels: data.topics,
         datasets: [
           {
             label: 'Your Time (sec)',
-            data: myTime,
+            data: data.myTime,
             borderColor: 'rgba(255, 99, 132, 1)',
             backgroundColor: 'rgba(255, 99, 132, 0.2)',
             tension: 0.3,
@@ -44,7 +77,7 @@
           },
           {
             label: 'Average Time (sec)',
-            data: avgTime,
+            data: data.avgTime,
             borderColor: 'rgba(75, 192, 192, 1)',
             backgroundColor: 'rgba(75, 192, 192, 0.2)',
             tension: 0.3,
@@ -82,6 +115,11 @@
         }
       }
     });
-  </script>
+  }
+
+  // Load default on page load
+  loadChartData('math-mock1.json');
+</script>
+
 </body>
 </html>
