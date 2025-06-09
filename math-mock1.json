@@ -1,5 +1,21 @@
 {
-  "topics": ["Percentage", "Algebra", "Geometry"],
-  "myTime": [45, 60, 50],
-  "avgTime": [30, 55, 40]
+  "topics": [
+    "Algebra",
+    "System of Linear Eqn",
+    "Tangent-Secant",
+    "Transverse/Common Tangent",
+    "Triangle",
+    "Circle Angles",
+    "Cyclic Quad 1",
+    "Cyclic Quad 2",
+    "Train Problem",
+    "Hemisphere",
+    "Plane Geometry",
+    "Ratios in MA",
+    "Ratio",
+    "Simplification",
+    "Work and Energy"
+  ],
+  "myTime": [8, 38, 141, 37, 11, 83, 38, 24, 96, 115, 68, 54, 26, 81, 38],
+  "avgTime": [26, 31, 71, 42, 13, 67, 31, 22, 58, 32, 41, 37, 19, 35, 24]
 }
