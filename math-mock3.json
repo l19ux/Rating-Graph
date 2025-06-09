@@ -1,5 +1,20 @@
 {
-  "topics": ["Percentage", "Algebra", "Geometry"],
-  "myTime": [45, 60, 50],
-  "avgTime": [30, 55, 40]
+  "topics": [
+    "Profit Loss",
+    "Basic Trigo",
+    "Algebra 1",
+    "Trigo Basic",
+    "Train Problems",
+    "Circles",
+    "Isosceles Triangle",
+    "Table DI 1",
+    "Algebra 2",
+    "Sphere",
+    "Bar Graph",
+    "Simplification 1",
+    "Table DI 2",
+    "Ratio Mixture"
+  ],
+  "myTime": [62, 16, 120, 54, 76, 61, 73, 30, 65, 74, 99, 22, 22, 50],
+  "avgTime": [77, 29, 65, 44, 82, 54, 58, 37, 48, 48, 44, 22, 22, 39]
 }
