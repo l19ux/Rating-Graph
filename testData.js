@@ -581,8 +581,8 @@
   my_marks: 110.00,
   avg_marks: 129.75,
   median_marks: 132,
-  topper_marks: 193,
-  my_rank: 15187,
-  total: 27883
+  topper_marks: 192.5,
+  my_rank: 19900,
+  total: 25247
 }
 /* your large array as above - unchanged, omitted here for brevity */];
