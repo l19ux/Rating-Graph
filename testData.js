@@ -690,11 +690,11 @@
   total: 167002
 },{
   date: '2025-06-26',
-  my_marks: 120,
-  avg_marks: 124.5,
+  my_marks: 125.50,
+  avg_marks: 125.37,
   median_marks: 126,
   topper_marks: 197.5,
-  my_rank: 94700,
-  total: 165936
+  my_rank: 93501,
+  total: 186292
 }
 /* your large array as above - unchanged, omitted here for brevity */];
