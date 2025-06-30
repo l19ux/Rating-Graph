@@ -721,6 +721,14 @@
   my_rank: 37597,
   total: 151925
 },{
+  date: '2025-06-28',
+  my_marks: 125,
+  avg_marks: 116.8,
+  median_marks: 118,
+  topper_marks: 197.50,
+  my_rank: 83600,
+  total: 222231
+},{
   date: '2025-06-29',
   my_marks: 141.00,
   avg_marks: 132.5,
