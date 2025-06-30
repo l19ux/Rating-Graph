@@ -744,5 +744,13 @@
   topper_marks: 200,
   my_rank: 53439,
   total: 137388
+},{
+  date: '2025-06-30',
+  my_marks: 137,
+  avg_marks: 120.75,
+  median_marks: 122,
+  topper_marks: 192.5,
+  my_rank: 34226,
+  total: 131502
 }
 /* your large array as above - unchanged, omitted here for brevity */];
