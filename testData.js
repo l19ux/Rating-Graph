@@ -784,5 +784,14 @@
   topper_marks: 195.5,
   my_rank: 11046,
   total: 14744
+},{
+ //Testbook-mock-just for fun gave me huge uplift
+  date: '2025-07-4',
+  my_marks: 136,
+  avg_marks: 107.89,
+  median_marks: 110,
+  topper_marks: 195.5,
+  my_rank: 1935,
+  total: 8953
 }
 /* your large array as above - unchanged, omitted here for brevity */];
