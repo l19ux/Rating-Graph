@@ -819,6 +819,14 @@
   total: 14098
 },{
   date: '2025-07-5',
+  my_marks: 117.5,
+  avg_marks: 76.44,
+  median_marks: 73.5,
+  topper_marks: 200,
+  my_rank: 8048,
+  total: 46004
+},{
+  date: '2025-07-5',
   my_marks: 130.5,
   avg_marks: 143.75,
   median_marks: 145,
