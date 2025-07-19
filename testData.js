@@ -881,5 +881,21 @@
   topper_marks: 197.5,
   my_rank: 85157,
   total: 261039
+},{
+  date: '2025-07-19',
+  my_marks: 141,
+  avg_marks: 101.49,
+  median_marks: 115.5,
+  topper_marks: 200,
+  my_rank: 12010,
+  total: 54902
+},{
+  date: '2025-07-19',
+  my_marks: 143,
+  avg_marks: 124.99,
+  median_marks: 142.5,
+  topper_marks: 197.5,
+  my_rank: 5671,
+  total: 15949
 }
 /* your large array as above - unchanged, omitted here for brevity */];
