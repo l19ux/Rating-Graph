@@ -922,7 +922,7 @@
   my_rank: 5042,
   total: 13050
 },{
-  date: '2025-07-20',
+  date: '2025-07-21',
   my_marks: 111.5,
   avg_marks: 92.04,
   median_marks: 90,
