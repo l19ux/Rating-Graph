@@ -962,7 +962,7 @@
   my_rank: 5152,
   total: 33824
 },{
-  date: '2025-07-22',
+  date: '2025-07-23',
   my_marks: 96.5,
   avg_marks: 137.7,
   median_marks: 140,
@@ -970,13 +970,21 @@
   my_rank: 11097,
   total: 12741
 },{
-  date: '2025-07-22',
-  my_marks: 96.5,
+  date: '2025-07-23',
+  my_marks: 128.5,
   avg_marks: 117.62,
   median_marks: 136.5,
   topper_marks: 200,
   my_rank: 12126,
   total: 24867
+},{
+  date: '2025-07-24',
+  my_marks: 126,
+  avg_marks: 143.6,
+  median_marks: 144,
+  topper_marks: 200,
+  my_rank: 8585,
+  total: 11777
 }
 
 /* your large array as above - unchanged, omitted here for brevity */];
