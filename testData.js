@@ -1067,13 +1067,21 @@
   total: 21472
 },{
 //need to be updated again
-  date: '2025-07-29',
+  date: '2025-07-30',
   my_marks: 122,
   avg_marks: 102,
   median_marks: 105,
   topper_marks: 200,
   my_rank: 698,
   total: 3284
+},{
+  date: '2025-07-31',
+  my_marks: 67.50,
+  avg_marks: 94.6,
+  median_marks: 96,
+  topper_marks: 192.50,
+  my_rank: 8640,
+  total: 10636
 }
 
 /* your large array as above - unchanged, omitted here for brevity */];
