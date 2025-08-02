@@ -1084,11 +1084,11 @@
 },{
   date: '2025-08-01',
   my_marks: 130.5,
-  avg_marks: 000,
-  median_marks: 000,
-  topper_marks: 000,
-  my_rank: 0000,
-  total: 0000
+  avg_marks: 0,
+  median_marks: 0,
+  topper_marks: 0,
+  my_rank: 1,
+  total: 2 //change
 },{
   date: '2025-07-02',
   my_marks: 123.5,
