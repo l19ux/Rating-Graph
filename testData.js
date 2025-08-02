@@ -1082,6 +1082,22 @@
   topper_marks: 192.50,
   my_rank: 8640,
   total: 10636
+},{
+  date: '2025-08-1', //need to be checked once again
+  my_marks: 130.5,
+  avg_marks: 000,
+  median_marks: 000,
+  topper_marks: 000,
+  my_rank: 0000,
+  total: 0000
+},{
+  date: '2025-07-2',
+  my_marks: 123.5,
+  avg_marks: 96,
+  median_marks: 100,
+  topper_marks: 200, //check mock 11 testbook 
+  my_rank: 7915,
+  total: 59527
 }
 
 /* your large array as above - unchanged, omitted here for brevity */];
