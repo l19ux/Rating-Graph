@@ -1066,7 +1066,6 @@
   my_rank: 12006,
   total: 21472
 },{
-//need to be updated again
   date: '2025-07-30',
   my_marks: 122,
   avg_marks: 102,
@@ -1083,7 +1082,7 @@
   my_rank: 8640,
   total: 10636
 },{
-  date: '2025-08-01', //need to be checked once again
+  date: '2025-08-01',
   my_marks: 130.5,
   avg_marks: 000,
   median_marks: 000,
@@ -1095,7 +1094,7 @@
   my_marks: 123.5,
   avg_marks: 96,
   median_marks: 100,
-  topper_marks: 200, //check mock 11 testbook 
+  topper_marks: 200, 
   my_rank: 7915,
   total: 59527
 }
