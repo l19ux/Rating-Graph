@@ -1153,6 +1153,16 @@
   topper_marks: 200, 
   my_rank: 18864,
   total: 53575
+},{
+  date: '2025-08-11', //change everything expcet the rank and toatl rank
+  my_marks: 97.5,
+  avg_marks: 85.29,
+  median_marks: 94.5,
+  topper_marks: 200, 
+  my_rank: 6230,
+  total: 16106
 }
+                   
+
 
 /* your large array as above - unchanged, omitted here for brevity */];
