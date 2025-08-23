@@ -1169,6 +1169,14 @@
   topper_marks: 192.5, 
   my_rank: 47616,
   total: 148294
+},{
+  date: '2025-08-20', //change everything expcet the rank and toatl rank
+  my_marks: 103,
+  avg_marks: 93.51,
+  median_marks: 92,
+  topper_marks: 200, 
+  my_rank: 18649,
+  total: 37754
 }
                    
 
